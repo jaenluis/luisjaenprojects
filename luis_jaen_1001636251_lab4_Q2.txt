@@ -1,0 +1,111 @@
+/////////////////////////
+//Luis Jaen
+//1001636251
+//Lab 4
+//Spring 2019
+//CSE-1320
+//Section: 007
+//Name of classmate: Don Bui    ID#: 1001677325 
+//Time taken for this question: 2 hours
+/*HONOR CODE
+I pledge, on my honor, to uphold UT Arlington's tradition of academic integrity, a tradition that values hard work and
+honest effort in the pursuit of academic excellence.
+I promise that I will submit only work that I personally create or that I contribute to group collaborations, and I will
+appropriately reference any work from other sources. I will follow the highest standards of integrity and uphold the spirit
+of the Honor Code
+    -Luis Jaen
+*/
+//////////////////////////
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+//struct that holds off of the data and nodes
+typedef struct node{
+    char name[30];
+    int cal;
+    struct node *next;
+}node;
+
+//this traverses the stack from top to bottom and prints all of the nodes in that order
+void printStack(node**top)
+{
+    char a[20] = "name";
+    char b[20] = "calories";
+    int total = 0;
+    node*temp = *top;
+    printf("%-20s%20s\n",a,b);
+    while(temp!=NULL){
+        total += temp->cal;
+        printf("%-20s%20d\n",temp->name,temp->cal);
+        temp = temp->next;
+    }
+    printf("\n\nTotal calories: %d\n\n\n",total);
+}
+
+//push adds at the end and the top is connected with the latest entry
+void push(node**top){
+    char pan[30];
+    int calo;
+    node*temp = (node*)malloc(sizeof(node));
+
+    printf("Enter pancake name and its calories: ");
+    scanf("%s%d",pan,&calo);
+    strcpy(temp->name,pan);
+    temp->cal = calo;
+
+    temp->next = *top; //this is where the top points below itself and stays at the "top". These are pointing to each other, up and down, stack moves up and top points down to node directly under
+    *top = temp;
+
+    printf("The pancake has been added at the top of the stack.\n\n\n");
+}
+
+//pop looks at the top, changes the top to the node under it, and then frees the old top
+void pop(node**top){
+    node*temp = *top; //temp is now pointing to top of the stack
+    if(temp==NULL){
+        printf("Stack Empty!\n\n");
+        return;
+    }
+    *top = temp->next; //make top point to the node under it and make that the new top, then we can delete the old top
+    free(temp);
+    printf("A pancake has been removed from the top of the stack.\n\n\n");
+}
+
+//this prints the menu
+void menu(){
+    printf("0) Exit program.\n\n1) Clear screen.\n\n2) Display the pancake stack.\n\n3) Push a pancake.\n\n4) Pop a pancake.\n\n\n");
+}
+
+//this clears the screen and then prints the menu again
+void clearScreen(){
+    system("cls");
+    menu();
+}
+
+int main()
+{
+    //this is where I declare and initialize the top as NULL, and ask for the users choice and then use a switch case to call the requested option
+    node *top = NULL;
+
+    int flag = 0;
+    int input;
+    menu();
+    while(flag==0){
+        printf("Enter a choice.\n\n");
+        scanf("%d",&input);
+        switch(input){
+            case 0: exit(0);
+            case 1: clearScreen();
+                    break;
+            case 2: printStack(&top);
+                    break;
+            case 3: push(&top);
+                    break;
+            case 4: pop(&top);
+                    break;
+            default: printf("NOT AN OPTION!\n\n");
+                     break;
+        }
+    }
+}
